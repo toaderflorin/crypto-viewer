@@ -10,4 +10,3 @@ export default function Text(props: Props) {
     <RnText></RnText>
   )
 }
-
