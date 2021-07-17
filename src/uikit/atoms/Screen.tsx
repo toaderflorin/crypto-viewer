@@ -1,20 +1,24 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { View, StyleSheet } from 'react-native'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1  
-  }
-})
+type Props = {
+  children: ReactNode
+}
 
-function Screen(props: any) {
+export default function Screen(props: Props) {
   const { children } = props
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.screen}>
       {children}
     </View>
   )
 }
 
-export default Screen
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    paddingTop: 20,
+    backgroundColor: 'red'
+  }
+})

@@ -6,12 +6,10 @@ type Props = {
   onPress: () => void
 }
 
-function Button(props: Props) {
+export default function Button(props: Props) {
   const { title, onPress } = props
 
   return (
     <RnButton title={title} onPress={onPress} />
   )
 }
-
-export default Button

@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
-    "@react-navigation/bottom-tabs": "^5.11.11",
+    "react-navigation-tabs": "^2.11.1",
     "expo": "~42.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",

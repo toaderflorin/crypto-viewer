@@ -2,7 +2,7 @@ import React from 'react'
 import Screen from '../../../uikit/atoms/Screen'
 import { Text } from 'react-native'
 
-function Home() {
+export default function Home() {
   return (
     <Screen>
       <Text>Home</Text>
@@ -10,4 +10,3 @@ function Home() {
   )
 }
 
-export default Home
