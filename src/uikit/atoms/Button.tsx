@@ -3,7 +3,7 @@ import { Button as RnButton } from 'react-native'
 
 type Props = {
   title: string
-  onPress: any
+  onPress: () => void
 }
 
 function Button(props: Props) {
