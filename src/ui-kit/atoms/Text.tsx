@@ -6,8 +6,10 @@ type Props = {
 }
 
 function Text(props: Props) {
+  const { children } = props
+
   return (
-    <RnText></RnText>
+    <RnText>{children}</RnText>
   )
 }
 

@@ -1,14 +1,14 @@
 import React from 'react'
 import { View } from 'react-native'
 
-function ViewFill(props: any) {
+function Screen(props: any) {
   const { children } = props
 
   return (
-    <View>
-
+    <View style={{ flex: 1 }}>
+      {children}
     </View>
   )
 }
 
-export default ViewFill
+export default Screen
