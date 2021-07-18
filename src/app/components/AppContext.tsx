@@ -1,5 +1,6 @@
 import React, { useReducer, Dispatch, createContext } from 'react'
 import { AppAction, appReducer, AppState, initialAppState } from '../store'
+import { Props } from '../types'
 
 export type DispatchFunc = (state: AppState, dispatch: Dispatch<AppAction>) => Promise<void> | void
 
@@ -9,12 +10,6 @@ export type AppContextType = {
 }
 
 export const AppContext = createContext({} as any as AppContextType)
-
-export type Value = string | number | boolean
-
-export type Props = {
-  [key: string]: object | Value
-}
 
 export default function AppContextProvider(props: Props) {
   const { children } = props
