@@ -5,9 +5,5 @@ export async function loadCryptos() {
     method: 'GET'
   })
 
-  const x = await response.json()
-  
-  console.log('x', x)
-
-  return x
+  return await response.json()
 }

@@ -22,7 +22,7 @@ export type HomeAction =
 | { type: typeof LOAD_CRYPTOS_ERROR }
 
 export const initialHomeState = {
-  cryptos: []
+  cryptoCatalog: []
 }
 
 export function loadCryptos() {

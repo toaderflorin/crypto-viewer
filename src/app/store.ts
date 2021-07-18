@@ -8,8 +8,8 @@ export type AppAction =
   | SettingsAction
 
 export type AppState = {
-  home: HomeState
-  details: DetailsState
+  home: HomeState,
+  details: DetailsState,
   settings: SettingsState
 }
 
