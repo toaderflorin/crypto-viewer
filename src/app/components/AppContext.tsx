@@ -5,7 +5,7 @@ export type DispatchFunc = (state: AppState, dispatch: Dispatch<AppAction>) => P
 
 export type AppContextType = {
   state: AppState
-  execute: (action: DispatchFunc) => Promise<void>
+  dispatch: (action: DispatchFunc) => Promise<void>
 }
 
 export const AppContext = createContext({} as any as AppContextType)
@@ -20,13 +20,13 @@ export default function AppContextProvider(props: Props) {
   const { children } = props
   const [state, dispatch] = useReducer(appReducer, initialAppState)
 
-  async function execute(action: (state: AppState, dispatch: Dispatch<AppAction>) => Promise<void> | void) {  
+  async function contextDispatch(action: (state: AppState, dispatch: Dispatch<AppAction>) => Promise<void> | void) {  
     await action(state, dispatch)
   }
 
   const contextValue = {
     state,
-    execute
+    dispatch: contextDispatch
   }
 
   return (
