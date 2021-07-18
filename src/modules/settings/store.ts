@@ -1,7 +1,7 @@
-type SettingsAction = any
-type DetailsState = {}
+export type SettingsAction = any
+export type SettingsState = {}
 
-export function detailsReducer(state: DetailsState, action: SettingsAction) {
+export function settingsReducer(state: SettingsState, action: SettingsAction) {
   switch (action.type) {
     default: {
       return state
