@@ -8,18 +8,18 @@ export type AppAction =
   | SettingsAction
 
 export type AppState = {
-  home: HomeState,
-  details: DetailsState,
+  home: HomeState
+  details: DetailsState
   settings: SettingsState
 }
 
-export const initialAppState = {
+export const initialAppState: AppState = {
   home: initialHomeState,
   details: initialDetailsState,
   settings: initialSettingsState
 }
 
-export function appReducer(state: AppState, action: AppAction) {
+export function appReducer(state: AppState, action: AppAction): AppState {
   return {
     home: homeReducer(state.home, action as HomeAction),
     details: detailsReducer(state.details, action as DetailsAction),

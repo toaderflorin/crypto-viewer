@@ -18,7 +18,7 @@ export default function AppContextProvider(props: Props) {
   async function contextDispatch(action: (state: AppState, dispatch: Dispatch<AppAction>) => Promise<void> | void) {  
     await action(state, dispatch)
   }
-
+    
   const contextValue = {
     state,
     dispatch: contextDispatch
@@ -26,7 +26,7 @@ export default function AppContextProvider(props: Props) {
 
   return (
     <AppContext.Provider value={contextValue}>
-      {children}
+      {children} 
     </AppContext.Provider>
-  )
+  )  
 }

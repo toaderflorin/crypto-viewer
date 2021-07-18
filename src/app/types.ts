@@ -5,8 +5,10 @@ export type Props = {
 }
 
 export enum RequestState {
-  Initial = 'INITIAL',
+  Null = 'NULL',
   Loading = 'LOADING',
   Loaded = 'LOADED',
   Error = 'ERROR'
 }
+
+export type ApiResponse = any
