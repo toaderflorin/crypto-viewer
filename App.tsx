@@ -1,2 +1,2 @@
-import Root from './src/modules/root/components/Root'
+import Root from './src/modules/app/components/Root'
 export default Root
