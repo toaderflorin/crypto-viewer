@@ -1,8 +1,10 @@
+import React from 'react'
 import { createAppContainer } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import Details from '../../modules/details/components/Details'
 import Home from '../../modules/home/components/Home'
 import Settings from '../../modules/settings/components/Settings'
+import AppContextProvider from './AppContext'
 
 const TabNavigator = createBottomTabNavigator({
   Home,  
@@ -10,4 +12,12 @@ const TabNavigator = createBottomTabNavigator({
   Settings
 })
 
-export default createAppContainer(TabNavigator)
+const TabNavigatorContainer = createAppContainer(TabNavigator)
+
+export default function App() {
+  return (
+    <AppContextProvider>
+      <TabNavigatorContainer />
+    </AppContextProvider>
+  )
+}
