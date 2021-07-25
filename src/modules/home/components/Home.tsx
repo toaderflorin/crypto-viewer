@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react'
 import Screen from '../../../uikit/atoms/Screen'
 import { useAppContext } from '../../../app/hooks/useAppContext'
-import CryptoItem from './CryptoItem'
 import * as store from '../store'
-import { ScrollView } from 'react-navigation'
-import { Navigation } from '../../../app/types'
 import { createStackNavigator } from '@react-navigation/stack'
-import Details from '../../details/components/Details'
-import Text from '../../../uikit/atoms/Text'
+import Details from './Details'
+import { Navigation } from '../../../app/types'
+import CryptoItem from './CryptoItem'
 
 type Props = {
   navigation: Navigation
 }
-
-const Stack = createStackNavigator()
 
 export default function Home(props: Props) {
   const { navigation } = props
@@ -26,11 +22,10 @@ export default function Home(props: Props) {
   }, [])
 
   return (
-    // <Screen>
-    //   <Text>Some text</Text>
-    // </Screen>
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={Details} />
-    </Stack.Navigator>
+    <Screen>
+     {catalog.map(crypto => (
+       <CryptoItem cryptoInfo={crypto} navigation={navigation} />
+     ))}
+    </Screen>
   )
 }
