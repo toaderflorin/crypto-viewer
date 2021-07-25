@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { Text as RnText } from 'react-native'
 
 type Props = {
@@ -12,4 +12,3 @@ export default function Text(props: Props) {
     <RnText>{children}</RnText>
   )
 }
-

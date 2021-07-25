@@ -12,3 +12,5 @@ export enum RequestState {
 }
 
 export type ApiResponse = any
+
+export type Navigation = any

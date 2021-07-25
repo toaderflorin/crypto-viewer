@@ -1,24 +1,36 @@
 import React, { useEffect } from 'react'
 import Screen from '../../../uikit/atoms/Screen'
-import { Text } from 'react-native'
-import Padding from '../../../uikit/atoms/Padding'
-import * as api from '../services/api'
 import { useAppContext } from '../../../app/hooks/useAppContext'
+import CryptoItem from './CryptoItem'
+import * as store from '../store'
+import { ScrollView } from 'react-navigation'
+import { Navigation } from '../../../app/types'
+import { createStackNavigator } from '@react-navigation/stack'
+import Details from '../../details/components/Details'
+import Text from '../../../uikit/atoms/Text'
 
-export default function Home() {
+type Props = {
+  navigation: Navigation
+}
+
+const Stack = createStackNavigator()
+
+export default function Home(props: Props) {
+  const { navigation } = props
   const { state, dispatch } = useAppContext()
   const homeState = state.home
-  const catalog = homeState.cryptoCatalog
+  const catalog = homeState.cryptoCatalog.data.slice(0, 20)
 
   useEffect(() => {
-    // api.loadCryptos()
+    dispatch(store.loadCryptos())
   }, [])
 
   return (
-    <Screen>
-      <Padding>
-        <Text>{JSON.stringify(catalog.slice(0, 50))}</Text>
-      </Padding>
-    </Screen>
+    // <Screen>
+    //   <Text>Some text</Text>
+    // </Screen>
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen name="Home" component={Details} />
+    </Stack.Navigator>
   )
 }
