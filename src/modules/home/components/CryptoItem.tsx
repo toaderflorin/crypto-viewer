@@ -13,19 +13,17 @@ type Props = {
 export default function CryptoItem(props: Props) {
   const { cryptoInfo, navigation } = props
 
-  console.log('Crypto info', cryptoInfo)
-
   function onCryptoPress() {
     navigation.navigate('Details')
   }
 
   return (
     <View style={{ borderBottomWidth: 1,  borderColor: '#ddd', backgroundColor: 'white' }}>
-      {/* <TouchableOpacity onPress={onCryptoPress}> */}
+      <TouchableOpacity onPress={onCryptoPress}>
         <Padding>
           <Text>{JSON.stringify(cryptoInfo)}</Text>
         </Padding>
-      {/* </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   )
 }
