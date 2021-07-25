@@ -2,10 +2,9 @@ import React, { useEffect } from 'react'
 import Screen from '../../../uikit/atoms/Screen'
 import { useAppContext } from '../../../app/hooks/useAppContext'
 import * as store from '../store'
-import { createStackNavigator } from '@react-navigation/stack'
-import Details from './Details'
 import { Navigation } from '../../../app/types'
 import CryptoItem from './CryptoItem'
+import { ScrollView } from 'react-native-gesture-handler'
 
 type Props = {
   navigation: Navigation
@@ -23,9 +22,11 @@ export default function Home(props: Props) {
 
   return (
     <Screen>
-     {catalog.map(crypto => (
-       <CryptoItem cryptoInfo={crypto} navigation={navigation} />
-     ))}
+      <ScrollView>
+        {catalog.map(crypto => (
+          <CryptoItem cryptoInfo={crypto} navigation={navigation} />
+        ))}
+      </ScrollView>
     </Screen>
   )
 }

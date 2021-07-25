@@ -9,15 +9,14 @@ export default function Screen(props: Props) {
   const { children } = props
 
   return (
-    <View style={styles.screen}>
+    <View style={styles.padding}>
       {children}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
+  padding: {  
     padding: 15
   }
 })
