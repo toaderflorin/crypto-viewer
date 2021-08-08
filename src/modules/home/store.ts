@@ -40,10 +40,11 @@ export function loadCryptos() {
 
       const response = await api.loadCryptos()
       const catalog = response.map(data => mapCrypto(data)) as CryptoInfo[]
+      const filterCatalog = catalog.filter(d => d.name.indexOf('btc') >= 0)
 
       dispatch({
         type: LOAD_CRYPTOS_RECEIVED,
-        cryptoCatalog: catalog
+        cryptoCatalog: filterCatalog
       })
     } catch {
       dispatch({

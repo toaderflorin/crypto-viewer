@@ -14,7 +14,7 @@ export default function CryptoItem(props: Props) {
   const { cryptoInfo, navigation } = props
 
   function onCryptoPress() {
-    navigation.navigate('Details')
+    navigation.navigate('Details', { id: cryptoInfo.id})
   }
 
   return (

@@ -24,7 +24,7 @@ export default function Home(props: Props) {
     <Screen>
       <ScrollView>
         {catalog.map(crypto => (
-          <CryptoItem cryptoInfo={crypto} navigation={navigation} />
+          <CryptoItem key={crypto.id} cryptoInfo={crypto} navigation={navigation} />
         ))}
       </ScrollView>
     </Screen>

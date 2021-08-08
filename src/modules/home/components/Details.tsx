@@ -4,14 +4,25 @@ import { Text } from 'react-native'
 import Padding from '../../../uikit/atoms/Padding'
 import { Navigation } from '../../../app/types'
 import Svg, { Circle, Rect } from 'react-native-svg'
+import * as api from '../services/api'
 
-type Props = {
+type Props = {  
   navigation: Navigation
+  route: any
 }
 
 export default function Details(props: Props) {
-  useEffect(() => {
+  const { route } = props
 
+  async function load() {
+    const x = await api.loadCryptoChart(route.params.id)
+    console.log('x', x)
+  }
+
+  useEffect(() => {
+    // console.log('route', 
+
+    load()
   })
 
   return (
