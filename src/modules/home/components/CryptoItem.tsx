@@ -2,7 +2,6 @@ import React from 'react'
 import { TouchableOpacity, View, Text } from 'react-native'
 import Padding from '../../../uikit/atoms/Padding'
 import { CryptoInfo } from '../store'
-// import Text from '../../../uikit/atoms/Text'
 import { Navigation } from '../../../app/types'
 
 type Props = {

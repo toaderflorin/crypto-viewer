@@ -10,11 +10,20 @@ type Props = {
   navigation: Navigation
 }
 
+const tokens = [
+  "bitcoin",
+  "ethereum",
+  "uniswap",
+  "rune",
+  "chainlink",
+  "ftx-token"
+]
+
 export default function Home(props: Props) {
   const { navigation } = props
   const { state, dispatch } = useAppContext()
   const homeState = state.home
-  const catalog = homeState.cryptoCatalog.data.slice(0, 20)
+  const catalog = homeState.cryptoCatalog.data.filter(ci => tokens.includes(ci.id))
 
   useEffect(() => {
     dispatch(store.loadCryptos())
