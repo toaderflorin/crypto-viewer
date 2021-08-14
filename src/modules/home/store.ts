@@ -15,6 +15,11 @@ export type CryptoInfo = {
   name: string
 }
 
+export type CryptoChartEntry = {
+  price: number
+  volume: number
+}
+
 export type HomeState = {
   cryptoCatalog: {
     data: CryptoInfo[]
@@ -74,11 +79,15 @@ export function loadCryptoChart(cryptoId: string) {
         type: LOAD_CRYPTO_DETAILS_REQUEST
       })
 
-      const x = await api.loadCryptoChart(cryptoId)
+      const result = await api.loadCryptoChart(cryptoId)
+      const details = result.tickers.map(ticker => ({
+        price: ticker.converter_last.usd,
+        volume: ticker.volume
+      }))      
 
       dispatch({
         type: LOAD_CRYPTO_DETAILS_RECEIVED,
-        details: x
+        details
       })
     } catch {
       dispatch({
@@ -113,26 +122,42 @@ export function homeReducer(state: HomeState, action: HomeAction): HomeState {
 
     case LOAD_CRYPTOS_ERROR: {
       return {
-        ...state
+        ...state,
+        cryptoCatalog: {
+          ...state.cryptoCatalog,
+          requestState: RequestState.Error
+        }
       }
     }
 
     case LOAD_CRYPTO_DETAILS_REQUEST: {
       return {
-        ...state
+        ...state,
+        details: {
+          ...state.details, 
+          requestState: RequestState.Loading
+        }
       }
     }
 
     case LOAD_CRYPTO_DETAILS_RECEIVED: {
       return {
         ...state,
-        details: action.details
+        details: {
+          ...state.details,
+          data: action.details,
+          requestState: RequestState.Loaded
+        }
       }
     }
 
     case LOAD_CRYPTO_DETAILS_ERROR: {
       return {
-        ...state
+        ...state,
+        details: {
+          ...state.details,
+          requestState: RequestState.Error
+        }
       }
     }
 
