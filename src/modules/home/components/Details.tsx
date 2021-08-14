@@ -17,12 +17,12 @@ export default function Details(props: Props) {
   const { state, dispatch } = useAppContext()
 
   async function loadCryptoDetails() {   
-    dispatch(store.loadCryptoChart(route.param.id))
+    dispatch(store.loadCryptoChart(route.params.id))
   }
 
   useEffect(() => {
     loadCryptoDetails()
-  })
+  }, [route.params.id])
 
   return (
     <Screen>

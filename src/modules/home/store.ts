@@ -19,7 +19,10 @@ export type HomeState = {
   cryptoCatalog: {
     data: CryptoInfo[]
     requestState: RequestState
-    details: any
+  },
+  details: {
+    data: any[],
+    requestState: RequestState
   }
 }
 
@@ -34,8 +37,11 @@ export type HomeAction =
 export const initialHomeState: HomeState = {
   cryptoCatalog: {
     data: [],
-    requestState: RequestState.Null,
-    details: [] as any
+    requestState: RequestState.Null
+  },
+  details: {
+    data: [],
+    requestState: RequestState.Null
   }
 }
 
@@ -72,7 +78,7 @@ export function loadCryptoChart(cryptoId: string) {
 
       dispatch({
         type: LOAD_CRYPTO_DETAILS_RECEIVED,
-        cryptoDetails: x
+        details: x
       })
     } catch {
       dispatch({
@@ -95,7 +101,6 @@ export function homeReducer(state: HomeState, action: HomeAction): HomeState {
     }
 
     case LOAD_CRYPTOS_RECEIVED: {
-      console.log('crypto catalog', action.cryptoCatalog)
       return {
         ...state,
         cryptoCatalog: {
