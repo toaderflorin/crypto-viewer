@@ -1,4 +1,5 @@
 import { API_URL } from '../../../consts'
+import moment from 'moment'
 
 export async function loadCryptos() {
   const response = await fetch('https://poloniex.com/public?command=returnTicker', {
@@ -9,7 +10,9 @@ export async function loadCryptos() {
 }
 
 export async function loadCryptoChart(tokenId: string) {
-  const response = await fetch(API_URL + `/coins/${tokenId}/ohlc?vs_currency=usd&days=200`, {
+  const startDt = moment().add(-200, 'days').unix()
+  const endDt = moment().unix()
+  const response = await fetch(`https://poloniex.com/public?command=returnChartData&currencyPair=USDT_BTC&start=${startDt}&end=${endDt}&period=86400`, {
     method: 'GET'
   })
 

@@ -3,6 +3,7 @@ import { AppState } from '../../app/store'
 import { ApiResponse, RequestState, Value } from '../../app/types'
 import * as api from './services/api'
 import * as _ from 'lodash'
+import { date } from '@storybook/addon-knobs'
 
 export const LOAD_CRYPTOS_REQUEST = 'LOAD_CRYPTOS_REQUEST'
 export const LOAD_CRYPTOS_RECEIVED = 'LOAD_CRYPTOS_RECEIVED'
@@ -22,7 +23,7 @@ export type Candle = {
   high: number
   low: number
   close: number
-  date: Date
+  date: string
 }
 
 export type HomeState = {
@@ -103,25 +104,24 @@ export function loadCryptos() {
 
 export function loadCryptoChart(cryptoId: string) {
   return async function (_state: AppState, dispatch: Dispatch<HomeAction>) {
-    // try {
-    //   dispatch({
-    //     type: LOAD_CRYPTO_DETAILS_REQUEST
-    //   })
+    try {
+      dispatch({
+        type: LOAD_CRYPTO_DETAILS_REQUEST
+      })
 
-    //   const result = await api.loadCryptoChart(cryptoId)
+      const result = await api.loadCryptoChart(cryptoId)
+      const details = result.map(data => mapCandle(data))
+      console.log('result', details)
 
-
-
-
-    //   dispatch({
-    //     type: LOAD_CRYPTO_DETAILS_RECEIVED,
-    //     details
-    //   })
-    // } catch {
-    //   dispatch({
-    //     type: LOAD_CRYPTO_DETAILS_ERROR
-    //   })
-    // }
+      dispatch({
+        type: LOAD_CRYPTO_DETAILS_RECEIVED,
+        details
+      })
+    } catch {
+      dispatch({
+        type: LOAD_CRYPTO_DETAILS_ERROR
+      })
+    }
   }
 }
 
@@ -204,11 +204,11 @@ function mapCrypto(data: ApiResponse): CryptoInfo {
 
 function mapCandle(data: any): Candle {
   return {
-    timestamp: data[0] as number,
-    open: data[1] as number,
-    high: data[2] as number,
-    low: data[3] as number,
-    close: data[4] as number,
-    date: new Date(data[0])
+    timestamp: data.date,
+    open: data.open,
+    high: data.high,
+    low: data.low,
+    close: data.close,
+    date: (new Date(data.date)).toDateString()
   }
 }

@@ -40,7 +40,6 @@ export default function Details(props: Props) {
       throw new Error('!')
     }
   }
-  console.log('Min max time', { minTime: new Date(minTime), maxTime: new Date(maxTime) })
 
   async function loadCryptoDetails() {
     dispatch(store.loadCryptoChart(route.params.id))
@@ -58,26 +57,26 @@ export default function Details(props: Props) {
       const x1 = x0 + 0.5
       const y0 = (1 - normalizeValue(minValue, maxValue, candle.open)) * 100
       const y1 = (1 - normalizeValue(minValue, maxValue, candle.close)) * 100      
-      const l0 = normalizeValue(minValue, maxValue, candle.low) * 100
-      const l1 = normalizeValue(minValue, maxValue, candle.high) * 100
+      const l0 = (1 - normalizeValue(minValue, maxValue, candle.low)) * 100
+      const l1 = (1 - normalizeValue(minValue, maxValue, candle.high)) * 100
       
       return (
         <>
           <Rect
             key={candle.timestamp}
             x={x0}
-            y={y0}
-            width={x1 - x0}
-            height={y1 - y0}
+            y={_.min([y0, y1])}
+            width={Math.abs(x1 - x0)}
+            height={Math.abs(y1 - y0)}
             fill={color}
           />
 
           <Rect
             key={candle.timestamp * 2}
-            x={x0}
-            y={y0}
+            x={x0 + 0.15}
+            y={_.min([l0, l1])}
             width={0.15}
-            height={l1 - l0}
+            height={Math.abs(l1 - l0)}
             fill={color}
           />
         </>
