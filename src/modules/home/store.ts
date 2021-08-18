@@ -3,7 +3,6 @@ import { AppState } from '../../app/store'
 import { ApiResponse, RequestState, Value } from '../../app/types'
 import * as api from './services/api'
 import * as _ from 'lodash'
-import { date } from '@storybook/addon-knobs'
 
 export const LOAD_CRYPTOS_REQUEST = 'LOAD_CRYPTOS_REQUEST'
 export const LOAD_CRYPTOS_RECEIVED = 'LOAD_CRYPTOS_RECEIVED'
@@ -23,7 +22,6 @@ export type Candle = {
   high: number
   low: number
   close: number
-  date: string
 }
 
 export type HomeState = {
@@ -88,7 +86,6 @@ export function loadCryptos() {
       ]
 
       const details = pairs.map(pair => mapCrypto(pair))
-      console.log('details', details)
 
       dispatch({
         type: LOAD_CRYPTOS_RECEIVED,
@@ -111,7 +108,6 @@ export function loadCryptoChart(cryptoId: string) {
 
       const result = await api.loadCryptoChart(cryptoId)
       const details = result.map(data => mapCandle(data))
-      console.log('result', details)
 
       dispatch({
         type: LOAD_CRYPTO_DETAILS_RECEIVED,
@@ -195,20 +191,12 @@ export function homeReducer(state: HomeState, action: HomeAction): HomeState {
   }
 }
 
-function mapCrypto(data: ApiResponse): CryptoInfo {
-  return {
-    id: data.id,
-    name: data.name
-  }
-}
-
 function mapCandle(data: any): Candle {
   return {
     timestamp: data.date,
     open: data.open,
     high: data.high,
     low: data.low,
-    close: data.close,
-    date: (new Date(data.date)).toDateString()
+    close: data.close
   }
 }
