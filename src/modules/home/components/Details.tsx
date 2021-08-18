@@ -3,9 +3,10 @@ import Screen from '../../../uikit/atoms/Screen'
 import { Text } from 'react-native'
 import Padding from '../../../uikit/atoms/Padding'
 import { Navigation } from '../../../app/types'
-import Svg, { Circle, Rect } from 'react-native-svg'
+import Svg, { Rect } from 'react-native-svg'
 import { useAppContext } from '../../../app/hooks/useAppContext'
 import * as store from '../store'
+import * as _ from 'lodash'
 
 type Props = {
   navigation: Navigation
@@ -15,9 +16,73 @@ type Props = {
 export default function Details(props: Props) {
   const { route } = props
   const { state, dispatch } = useAppContext()
+  const candles = state.home.details.data
+  const minTime = _.min(candles.map(candle => candle.timestamp))
+  const maxTime = _.max(candles.map(candle => candle.timestamp))
+  const minValue = _.min(candles.map(candle => candle.low))
+  const maxValue = _.max(candles.map(candle => candle.high))
+  const timeStep = (maxTime - minTime) / candles.length
 
-  async function loadCryptoDetails() {   
+  for (const candle of candles) {
+    if (candle.open <  minValue) {
+      throw new Error('!')
+    }
+
+    if (candle.close <  minValue) {
+      throw new Error('!')
+    }
+
+    if (candle.open > maxValue) {
+      throw new Error('!')
+    }
+
+    if (candle.close >  maxValue) {
+      throw new Error('!')
+    }
+  }
+  console.log('Min max time', { minTime: new Date(minTime), maxTime: new Date(maxTime) })
+
+  async function loadCryptoDetails() {
     dispatch(store.loadCryptoChart(route.params.id))
+  }
+
+  function normalizeValue(min: number, max: number, value: number) {
+    return (value - min) / (max - min)
+  }
+
+  function getCandleBodies() {
+    return candles.map(candle => {
+      const color = candle.open > candle.close ? 'green' : 'red'
+
+      const x0 = normalizeValue(minTime, maxTime, candle.timestamp) * 100
+      const x1 = x0 + 0.5
+      const y0 = (1 - normalizeValue(minValue, maxValue, candle.open)) * 100
+      const y1 = (1 - normalizeValue(minValue, maxValue, candle.close)) * 100      
+      const l0 = normalizeValue(minValue, maxValue, candle.low) * 100
+      const l1 = normalizeValue(minValue, maxValue, candle.high) * 100
+      
+      return (
+        <>
+          <Rect
+            key={candle.timestamp}
+            x={x0}
+            y={y0}
+            width={x1 - x0}
+            height={y1 - y0}
+            fill={color}
+          />
+
+          <Rect
+            key={candle.timestamp * 2}
+            x={x0}
+            y={y0}
+            width={0.15}
+            height={l1 - l0}
+            fill={color}
+          />
+        </>
+      )
+    })
   }
 
   useEffect(() => {
@@ -27,10 +92,8 @@ export default function Details(props: Props) {
   return (
     <Screen>
       <Padding>
-        <Text>Details</Text>
-        <Svg height="50%" width="50%" viewBox="0 0 100 100" {...props}>
-          <Circle cx="50" cy="50" r="45" stroke="blue" strokeWidth="2.5" fill="green" />
-          <Rect x="15" y="15" width="70" height="70" stroke="red" strokeWidth="2" fill="yellow" />
+        <Svg height="100%" width="100%" viewBox="0 0 100 100">
+          {getCandleBodies()}
         </Svg>
       </Padding>
     </Screen>

@@ -1,7 +1,7 @@
 import { API_URL } from '../../../consts'
 
 export async function loadCryptos() {
-  const response = await fetch(API_URL + '/coins/list?include_platform=true', {
+  const response = await fetch('https://poloniex.com/public?command=returnTicker', {
     method: 'GET'
   })
 
@@ -9,7 +9,7 @@ export async function loadCryptos() {
 }
 
 export async function loadCryptoChart(tokenId: string) {
-  const response = await fetch(API_URL + `/coins/${tokenId}/tickers`, {
+  const response = await fetch(API_URL + `/coins/${tokenId}/ohlc?vs_currency=usd&days=200`, {
     method: 'GET'
   })
 

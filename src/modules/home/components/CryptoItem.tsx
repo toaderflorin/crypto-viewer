@@ -20,7 +20,7 @@ export default function CryptoItem(props: Props) {
     <View style={{ borderBottomWidth: 1,  borderColor: '#ddd', backgroundColor: 'white' }}>
       <TouchableOpacity onPress={onCryptoPress}>
         <Padding>
-          <Text>{JSON.stringify(cryptoInfo)}</Text>
+          <Text>{cryptoInfo.name}</Text>
         </Padding>
       </TouchableOpacity>
     </View>

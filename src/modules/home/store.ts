@@ -2,6 +2,7 @@ import { Dispatch } from 'react'
 import { AppState } from '../../app/store'
 import { ApiResponse, RequestState, Value } from '../../app/types'
 import * as api from './services/api'
+import * as _ from 'lodash'
 
 export const LOAD_CRYPTOS_REQUEST = 'LOAD_CRYPTOS_REQUEST'
 export const LOAD_CRYPTOS_RECEIVED = 'LOAD_CRYPTOS_RECEIVED'
@@ -15,9 +16,13 @@ export type CryptoInfo = {
   name: string
 }
 
-export type CryptoChartEntry = {
-  price: number
-  volume: number
+export type Candle = {
+  timestamp: number
+  open: number
+  high: number
+  low: number
+  close: number
+  date: Date
 }
 
 export type HomeState = {
@@ -26,7 +31,7 @@ export type HomeState = {
     requestState: RequestState
   },
   details: {
-    data: any[],
+    data: Candle[],
     requestState: RequestState
   }
 }
@@ -36,7 +41,7 @@ export type HomeAction =
   | { type: typeof LOAD_CRYPTOS_RECEIVED, cryptoCatalog: CryptoInfo[] }
   | { type: typeof LOAD_CRYPTOS_ERROR }
   | { type: typeof LOAD_CRYPTO_DETAILS_REQUEST }
-  | { type: typeof LOAD_CRYPTO_DETAILS_RECEIVED, details: any }
+  | { type: typeof LOAD_CRYPTO_DETAILS_RECEIVED, details: ApiResponse }
   | { type: typeof LOAD_CRYPTO_DETAILS_ERROR }
 
 export const initialHomeState: HomeState = {
@@ -51,18 +56,42 @@ export const initialHomeState: HomeState = {
 }
 
 export function loadCryptos() {
-  return async function (state: AppState, dispatch: Dispatch<HomeAction>) {
+  return async function (_state: AppState, dispatch: Dispatch<HomeAction>) {
     try {
       dispatch({
         type: LOAD_CRYPTOS_REQUEST
       })
 
-      const response = await api.loadCryptos()
-      const catalog = response.map(data => mapCrypto(data)) as CryptoInfo[]
+      const result = await api.loadCryptos()
+
+      function mapCrypto(pair: any): CryptoInfo {
+        return {
+          id: result[pair.pair].id,
+          name: pair.name
+        }
+      }
+
+      const pairs = [
+        {
+          pair: 'USDT_BTC',
+          name: 'Bitcoin/USD'
+        },
+        {
+          pair: 'USDT_ETH',
+          name: 'Ethereum/USD'
+        }, 
+        { 
+          pair: 'USDT_LINK', 
+          name: 'Link'
+        }
+      ]
+
+      const details = pairs.map(pair => mapCrypto(pair))
+      console.log('details', details)
 
       dispatch({
         type: LOAD_CRYPTOS_RECEIVED,
-        cryptoCatalog: catalog
+        cryptoCatalog: details
       })
     } catch {
       dispatch({
@@ -73,27 +102,26 @@ export function loadCryptos() {
 }
 
 export function loadCryptoChart(cryptoId: string) {
-  return async function (state: AppState, dispatch: Dispatch<HomeAction>) {
-    try {
-      dispatch({
-        type: LOAD_CRYPTO_DETAILS_REQUEST
-      })
+  return async function (_state: AppState, dispatch: Dispatch<HomeAction>) {
+    // try {
+    //   dispatch({
+    //     type: LOAD_CRYPTO_DETAILS_REQUEST
+    //   })
 
-      const result = await api.loadCryptoChart(cryptoId)
-      const details = result.tickers.map(ticker => ({
-        price: ticker.converter_last.usd,
-        volume: ticker.volume
-      }))      
+    //   const result = await api.loadCryptoChart(cryptoId)
 
-      dispatch({
-        type: LOAD_CRYPTO_DETAILS_RECEIVED,
-        details
-      })
-    } catch {
-      dispatch({
-        type: LOAD_CRYPTO_DETAILS_ERROR
-      })
-    }
+
+
+
+    //   dispatch({
+    //     type: LOAD_CRYPTO_DETAILS_RECEIVED,
+    //     details
+    //   })
+    // } catch {
+    //   dispatch({
+    //     type: LOAD_CRYPTO_DETAILS_ERROR
+    //   })
+    // }
   }
 }
 
@@ -134,7 +162,7 @@ export function homeReducer(state: HomeState, action: HomeAction): HomeState {
       return {
         ...state,
         details: {
-          ...state.details, 
+          ...state.details,
           requestState: RequestState.Loading
         }
       }
@@ -171,5 +199,16 @@ function mapCrypto(data: ApiResponse): CryptoInfo {
   return {
     id: data.id,
     name: data.name
+  }
+}
+
+function mapCandle(data: any): Candle {
+  return {
+    timestamp: data[0] as number,
+    open: data[1] as number,
+    high: data[2] as number,
+    low: data[3] as number,
+    close: data[4] as number,
+    date: new Date(data[0])
   }
 }
