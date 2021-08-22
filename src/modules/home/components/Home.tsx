@@ -5,6 +5,7 @@ import * as store from '../store'
 import { Navigation } from '../../../app/types'
 import CryptoItem from './CryptoItem'
 import { ScrollView } from 'react-native-gesture-handler'
+import { StatusBar } from 'react-native'
 
 type Props = {
   navigation: Navigation
@@ -22,6 +23,7 @@ export default function Home(props: Props) {
 
   return (
     <Screen>
+      <StatusBar></StatusBar>
       <ScrollView>
         {catalog.map(crypto => (
           <CryptoItem key={crypto.id} cryptoInfo={crypto} navigation={navigation} />
