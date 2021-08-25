@@ -1,7 +1,7 @@
 import { DarkTheme, NavigationContainer, ThemeProvider } from '@react-navigation/native'
 import React from 'react'
 import { StatusBar } from 'react-native'
-import Details from '../../modules/home/components/Details'
+import Details from '../../modules/details/components/Details'
 import Home from '../../modules/home/components/Home'
 import AppContextProvider from './AppContext'
 import { createStackNavigator } from '@react-navigation/stack'
